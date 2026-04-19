@@ -1,0 +1,8 @@
+services:
+  http-server:
+    image: http-server
+    build:
+      context: http/src
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
