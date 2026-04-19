@@ -19,7 +19,8 @@ services:
       dockerfile: Dockerfile
     labels:
       - traefik.enable=true
-      - traefik.http.routers.http-server.rule=PathPrefix(`/`)
+      - traefik.docker.network=proxy
+      - traefik.http.routers.http-server.rule=Host(`localhost`)
       - traefik.http.routers.http-server.entrypoints=web
       - traefik.http.services.http-server.loadbalancer.server.port=8080
     networks:
