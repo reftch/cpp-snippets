@@ -11,7 +11,7 @@ WORKDIR /app
 COPY server.cpp .
 
 # Compile the C++ code statically to ensure it doesn't depend on runtime libraries
-RUN g++ -o server server.cpp -static
+RUN g++ -o server server.cpp -static -std=c++17 -O3
 
 # Stage 2: Runtime stage
 FROM scratch

@@ -42,4 +42,3 @@ gcc -O3 fibonacci/src/main.c -o build/fib
 description = "Clean task"
 quiet = true
 run = "rm -rf build"
-

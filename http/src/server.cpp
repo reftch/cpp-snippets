@@ -32,7 +32,10 @@ int setNonblocking(int fd) {
 
 int main() {
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    if (sockfd < 0) { perror("socket"); return 1; }
+    if (sockfd < 0) { 
+        perror("socket"); 
+        return 1; 
+    }
 
     int one = 1;
     setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(one));
