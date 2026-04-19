@@ -1,6 +1,12 @@
 #include <iostream>
 
-class Fibonacci {
+class IFibonacci {
+public:
+    virtual ~IFibonacci() = default;
+    // virtual unsigned long compute(unsigned long n) = 0;
+};
+
+class Fibonacci : public IFibonacci {
 public:
     unsigned long compute(unsigned long n) {
         if (n < 2)
