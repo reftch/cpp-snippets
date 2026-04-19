@@ -1,0 +1,45 @@
+# Http server
+
+[tasks.http]
+description = "Run http server"
+depends = ["http-build"]
+run = "./build/server"
+
+[tasks.http-build]
+description = "Build http server"
+quiet = true
+run = """
+mkdir -p build
+g++ -std=c++17 -O3 http/src/server.cpp -o build/server
+"""
+
+# Fibonacci 
+
+[tasks.fib]
+description = "Run application"
+depends = ["build-fib-cpp"]
+run = "./build/fib"
+
+[tasks.build-fib-cpp]
+description = "Build application"
+quiet = true
+run = """
+mkdir -p build
+g++ -O3 fibonacci/src/main.cpp -o build/fib
+"""
+
+[tasks.build-fib]
+description = "Build application"
+quiet = true
+run = """
+mkdir -p build
+gcc -O3 fibonacci/src/main.c -o build/fib
+"""
+
+# Clean up task
+
+[tasks.clean]
+description = "Clean task"
+quiet = true
+run = "rm -rf build"
+
