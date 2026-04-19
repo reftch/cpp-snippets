@@ -1,8 +1,30 @@
 services:
+  traefik:
+    image: traefik:v3.6
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+    ports:
+      - "8080:80"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - proxy
+
   http-server:
     image: http-server
     build:
       context: http/src
       dockerfile: Dockerfile
-    ports:
-      - "8080:8080"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.http-server.rule=PathPrefix(`/`)
+      - traefik.http.routers.http-server.entrypoints=web
+      - traefik.http.services.http-server.loadbalancer.server.port=8080
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    name: proxy
