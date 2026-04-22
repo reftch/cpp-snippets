@@ -11,7 +11,7 @@ unsigned long compute(unsigned long n) {
 }
 
 int main() {
-    unsigned long n = 45;
+    unsigned long n = 30;
 
     std::cout << "Running fibonacci calculation..." << std::endl;
     unsigned long result = compute(n);

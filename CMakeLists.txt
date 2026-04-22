@@ -8,5 +8,5 @@ project(cpp-snippets
     DESCRIPTION "C++ Snippets"
     HOMEPAGE_URL "https://github.com/reftch"
 )
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 20)
 add_subdirectory(snippets)
