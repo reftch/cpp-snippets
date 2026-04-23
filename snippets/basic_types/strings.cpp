@@ -3,7 +3,7 @@
 
 int main() {
     // Strings are dynamic arrays of chars
-    constexpr std::string str = "Fahrzeug";
+    std::string str = "Fahrzeug";
 
     // print the string
     std::cout << str << std::endl;
