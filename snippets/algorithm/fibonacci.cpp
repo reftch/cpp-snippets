@@ -14,9 +14,9 @@ T compute(T n) {
 int main() {
     unsigned long n = 45;
 
-    std::cout << "Running fibonacci calculation..." << std::endl;
+    std::cout << "Running fibonacci calculation..." << '\n';
     unsigned long result = compute<unsigned long>(n);
 
-    std::cout << "Result fibonacci of " << n << " is " << result << std::endl;
+    std::cout << "Result fibonacci of " << n << " is " << result << '\n';
     return 0;
 }

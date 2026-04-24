@@ -32,7 +32,7 @@ void print_array(std::vector<int> sorted) {
     for (int num : sorted) {
         std::cout << num << " ";
     }
-    std::cout << std::endl;
+    std::cout << '\n';
 }
 
 void call_custom_sort() {
