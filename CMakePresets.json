@@ -13,7 +13,7 @@
       }
     },
     {
-      "name": "relase",
+      "name": "release",
       "description": "Relase settings",
       "hidden": false,
       "generator": "Unix Makefiles",
