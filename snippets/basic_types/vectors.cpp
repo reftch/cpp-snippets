@@ -5,6 +5,11 @@ int main() {
     // dynamic size vector
     std::vector<int> v = {1, 2, 3};
 
+    // why we should use size_t in loops
+    std::cout << "INT_MAX: " << INT_MAX << '\n';
+    std::cout << "INT_MIN: " << INT_MIN << '\n';
+    std::cout << "SIZE_MAX: " << SIZE_MAX << '\n';
+
     // iterate vector elements
     for (size_t i = 0; i < v.size(); i++) {
         std::cout << "v[" << i << "]: " << v[i] << '\n';
