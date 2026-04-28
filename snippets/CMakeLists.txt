@@ -6,3 +6,6 @@ add_subdirectory(algorithm)
 
 # Miscellaneous
 add_subdirectory(miscellaneous)
+
+# Utilities
+add_subdirectory(utilities)
