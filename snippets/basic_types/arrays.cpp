@@ -4,7 +4,8 @@
 
 int main() {
     // Fixed size array
-    std::array<int, 5> a = {1, 2, 3, 4, 5};
+    constexpr int n = 5;
+    std::array<int, n> a = {1, 2, 3, 4, 5};
 
     // iterate arrays
     for (size_t i = 0; i < a.size(); ++i) {
@@ -21,6 +22,13 @@ int main() {
     for (const auto& el : a) {
         std::cout << "Element " << el << '\n';
     }
+
+    //[explicit Explicit size
+    int b[n];
+    b[0] = 1;
+    b[1] = 2;
+    b[2] = 3;
+    std::cout << "b: " << b << '\n';
 
     return 0;
 }
