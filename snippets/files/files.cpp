@@ -10,7 +10,7 @@ int main() {
     constexpr size_t n = 15;
     numbers.resize(n);
     for (size_t i = 0; i < n; ++i) {
-        numbers[i] = i * 1000 + 1;
+        numbers[i] = i * 100 + 3;
     }
 
     // save numbers in text file

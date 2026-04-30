@@ -1,6 +1,9 @@
 # Basics
 add_subdirectory(basic_types)
 
+# Data types
+add_subdirectory(data_types)
+
 # Algorithms
 add_subdirectory(algorithm)
 
