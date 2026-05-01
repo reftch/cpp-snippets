@@ -17,7 +17,7 @@ int main() {
     // "Async pool" of std::async
     std::cout << "Submitting async tasks...\n";
     for (int i = 1; i <= pool_size; ++i) {
-        tasks.push_back(std::async(std::launch::async, lambda, i + 7));
+        tasks.push_back(std::async(std::launch::async, lambda, i + 8));
     }
 
     // do something while async tasks run
