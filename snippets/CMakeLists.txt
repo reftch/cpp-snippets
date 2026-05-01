@@ -13,5 +13,8 @@ add_subdirectory(files)
 # Miscellaneous
 add_subdirectory(miscellaneous)
 
+# Parallel
+add_subdirectory(parallel)
+
 # Utilities
 add_subdirectory(utilities)
