@@ -31,7 +31,7 @@ namespace http {
     struct route_info {
         std::string method;
         std::string pattern;
-        std::function<int(int)> handler;
+        std::function<std::string(int)> handler;
     };
 
     class server {
@@ -88,7 +88,8 @@ namespace http {
 
         void stop() {}
 
-        void register_handler(const std::string& method, const std::string& path, std::function<int(int)> handler) {
+        void register_handler(const std::string& method, const std::string& path,
+                              std::function<std::string(int)> handler) {
             // Create route_info structure
             route_info info;
             info.method = method;
@@ -192,8 +193,6 @@ namespace http {
 
 }  // namespace http
 
-http::server* server_ptr = nullptr;
-
 static const char* okResp =
     "HTTP/1.1 200 OK\r\n"
     "Content-Type: text/plain; charset=utf-8\r\n"
@@ -203,14 +202,14 @@ static const char* okResp =
 
 int main() {
     // create server instance
-    std::unique_ptr<http::server> s_ptr = std::make_unique<http::server>("127.0.0.1", 8080);
-    server_ptr = s_ptr.get();
+    auto s_ptr = std::make_unique<http::server>("127.0.0.1", 8080);
+    auto server_ptr = s_ptr.get();
 
-    auto home_handler = [](int fd) {
+    auto home_handler = [](int fd) -> std::string {
         if (write(fd, okResp, strlen(okResp)) == -1) {
             perror("error writing response body");
         }
-        return fd;
+        return okResp;
     };
 
     server_ptr->register_handler("GET", "/", home_handler);
