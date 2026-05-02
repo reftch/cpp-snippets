@@ -121,21 +121,6 @@ int main() {
         }
 
         tasks.clear();
-
-        // handle client requests.
-        // Accept system call .
-
-        // int client_socket_fd = accept(s_fd, (struct sockaddr*)&client_addr, &client_addr_size);
-        // if (client_socket_fd < 0) {
-        //     std::cerr << "Failed to accept client request." << std::endl;
-        //     exit(1);
-        // }
-
-        // write(client_socket_fd, okResp, strlen(okResp));
-        // close(client_socket_fd);
-        // Create a new thread to handle the client
-        // std::thread clientThread(handleClient, client_socket_fd);
-        // clientThread.detach();  // Detach the thread to allow it to run independently
     }
 
     return 0;
