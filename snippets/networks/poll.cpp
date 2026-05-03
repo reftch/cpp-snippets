@@ -16,17 +16,6 @@
 
 namespace http {
 
-    struct client_details {
-        int32_t clientfd;              // client file descriptor
-        int32_t serverfd;              // server file descriptor
-        std::vector<int> client_list;  // for storing all the client fd
-
-        client_details(void) {  // initializing the variable
-            this->clientfd = -1;
-            this->serverfd = -1;
-        }
-    };
-
     // Structure to hold route information
     struct route_info {
         std::string method;
@@ -36,26 +25,24 @@ namespace http {
 
     class server {
        public:
-        server(const std::string& host, const int port) : host_(host), port_(port) {}
+        server(const std::string& host, const int port) : host(host), port(port) {}
 
         const int max_connections = 1024;
 
         void start() {
+            // start time
             auto start_time = std::chrono::high_resolution_clock::now();
-            //
-            std::unique_ptr<client_details> c_ptr = std::make_unique<client_details>();
-            client = c_ptr.get();
 
-            client->serverfd = socket(AF_INET, SOCK_STREAM, 0);  // for tcp connection
+            serverfd = socket(AF_INET, SOCK_STREAM, 0);  // for tcp connection
             // error handling
-            if (client->serverfd <= 0) {
+            if (serverfd <= 0) {
                 std::cerr << "socket creation error\n";
                 exit(1);
             }
 
             // setting serverFd to allow multiple connection
             int opt = 1;
-            if (setsockopt(client->serverfd, SOL_SOCKET, SO_REUSEADDR, (char*)&opt, sizeof opt) < 0) {
+            if (setsockopt(serverfd, SOL_SOCKET, SO_REUSEADDR, (char*)&opt, sizeof opt) < 0) {
                 std::cerr << "setSocketopt error\n";
                 exit(2);
             }
@@ -63,17 +50,17 @@ namespace http {
             // setting the server address
             struct sockaddr_in serverAddr;
             serverAddr.sin_family = AF_INET;
-            serverAddr.sin_port = htons(port_);
-            inet_pton(AF_INET, host_.data(), &serverAddr.sin_addr);
+            serverAddr.sin_port = htons(port);
+            inet_pton(AF_INET, host.data(), &serverAddr.sin_addr);
 
             // binding the server address
-            if (bind(client->serverfd, (struct sockaddr*)&serverAddr, sizeof(serverAddr)) < 0) {
+            if (bind(serverfd, (struct sockaddr*)&serverAddr, sizeof(serverAddr)) < 0) {
                 std::cerr << "bind error\n";
                 exit(3);
             }
 
             // listening to the port
-            if (listen(client->serverfd, max_connections) < 0) {
+            if (listen(serverfd, max_connections) < 0) {
                 std::cerr << "listen error\n";
                 exit(4);
             }
@@ -81,7 +68,7 @@ namespace http {
             auto end_time = std::chrono::high_resolution_clock::now();
             auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
 
-            std::cout << "server listening on http://" << host_ << ":" << port_ << " in " << duration << '\n';
+            std::cout << "server listening on http://" << host << ":" << port << " in " << duration << '\n';
 
             handle_requests();
         }
@@ -100,11 +87,11 @@ namespace http {
         }
 
        private:
-        std::string host_;
-        int port_;
-
+        std::string host;
+        int port;
+        int32_t serverfd;  // server file descriptor
+        std::vector<int> client_list;
         std::vector<struct pollfd> pollfds;
-        client_details* client;
 
         // map for routes
         std::vector<route_info> routes_;
@@ -119,13 +106,13 @@ namespace http {
 
                 // Add server socket
                 struct pollfd server_pollfd;
-                server_pollfd.fd = client->serverfd;
+                server_pollfd.fd = serverfd;
                 server_pollfd.events = POLLIN;
                 server_pollfd.revents = 0;
                 pollfds.push_back(server_pollfd);
 
                 // Add all client sockets
-                for (auto sd : client->client_list) {
+                for (auto sd : client_list) {
                     struct pollfd pfd;
                     pfd.fd = sd;
                     pfd.events = POLLIN;
@@ -142,26 +129,27 @@ namespace http {
 
                 // Check for new connection on server socket
                 if (pollfds[0].revents & POLLIN) {
-                    client->clientfd = accept(client->serverfd, (struct sockaddr*)NULL, NULL);
-                    if (client->clientfd < 0) {
+                    // client file descriptor
+                    auto clientfd = accept(serverfd, (struct sockaddr*)NULL, NULL);
+                    if (clientfd < 0) {
                         std::cerr << "accept error\n";
                         continue;
                     }
                     // Set non-blocking mode for client socket
-                    int flags = fcntl(client->clientfd, F_GETFL, 0);
-                    fcntl(client->clientfd, F_SETFL, flags | O_NONBLOCK);
+                    int flags = fcntl(clientfd, F_GETFL, 0);
+                    fcntl(clientfd, F_SETFL, flags | O_NONBLOCK);
 
                     // adding client to list
-                    client->client_list.push_back(client->clientfd);
+                    client_list.push_back(clientfd);
                     // std::cout << "new client connected, fd: " << client->clientfd << std::endl;
                 }
 
                 // check for activity on client sockets, process each client socket
-                for (size_t i = 0; i < client->client_list.size();) {
+                for (size_t i = 0; i < client_list.size();) {
                     int pollfd_index = i + 1;  // +1 because server socket is at index 0
 
                     if (pollfd_index < pollfds.size() && (pollfds[pollfd_index].revents & POLLIN)) {
-                        int sd = client->client_list[i];
+                        int sd = client_list[i];
                         char message[1024];
                         ssize_t valread = read(sd, message, sizeof(message) - 1);
 
@@ -174,7 +162,7 @@ namespace http {
                             // Client disconnected
                             close(sd);
                             // Remove from client list
-                            client->client_list.erase(client->client_list.begin() + i);
+                            client_list.erase(client_list.begin() + i);
                             continue;  // Don't increment i since we removed an element
                         } else {
                             // Error or would block (non-blocking socket)
