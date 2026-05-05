@@ -87,8 +87,8 @@ namespace http {
         }
 
        private:
-        std::string host;
         int port;
+        std::string host;
         int32_t serverfd;  // server file descriptor
         std::vector<int> client_list;
         std::vector<struct pollfd> pollfds;
