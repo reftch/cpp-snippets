@@ -1,6 +1,6 @@
 /**
  * https://en.wikipedia.org/wiki/Trie
- * 
+ *
  */
 
 #include <functional>
@@ -112,7 +112,8 @@ namespace router {
 
 }  // namespace router
 
-router::response_body home_handler(const std::string& path, const std::unordered_map<std::string, std::string>& params) {
+router::response_body home_handler(const std::string& path,
+                                   const std::unordered_map<std::string, std::string>& params) {
     return "{\"method\":\"GET\",\"path\":\"" + path + "\"}";
 }
 
@@ -129,7 +130,8 @@ router::response_body post_users(const std::string& path, const std::unordered_m
 router::response_body get_edit(const std::string& path, const std::unordered_map<std::string, std::string>& params) {
     const std::string& id = params.at("id");
     const std::string& userId = params.at("userId");
-    return "{\"method\":\"GET\",\"path\":\"" + path + "\",\"id\":\"" + id + "\",\"name\":\"user\",\"userId\":\"" + userId + "\"}";
+    return "{\"method\":\"GET\",\"path\":\"" + path + "\",\"id\":\"" + id + "\",\"name\":\"user\",\"userId\":\"" +
+           userId + "\"}";
 }
 
 int main() {
@@ -181,5 +183,4 @@ int main() {
         router::response_body body = handler(path, params);
         print(path, body);
     }
-
 }
