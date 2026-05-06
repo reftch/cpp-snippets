@@ -50,7 +50,27 @@ int main() {
     print(v1);
     print(v2);
 
+    // sorting
+    std::vector<int> v3 = {5, 1, 8, 3, 9, 2, 5, 1, 10};
 
-    
+	// Sort in descending order
+	sort(v3.begin(), v3.end(), [] (const int& a, const int&b) {
+		return a > b;
+	});
+
+    print(v3);
+
+    // Find first element divisible by 3
+	auto it = find_if(v3.begin(), v3.end(), [] (const int& a) {
+		return a % 3 == 0;
+	});
+
+    if (it != v3.end()) {
+        std::cout << *it;
+    } else { 
+        std::cout << "No such element";
+    }
+    std::cout << '\n';
+
     return 0;
 }
