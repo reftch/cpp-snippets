@@ -1,3 +1,7 @@
+/**
+ * https://www.geeksforgeeks.org/cpp/lambda-expression-in-c/
+ * 
+ */
 #include <iostream>
 #include <vector>
 

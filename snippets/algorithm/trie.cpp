@@ -1,3 +1,7 @@
+/**
+ * https://en.wikipedia.org/wiki/Trie
+ * 
+ */
 
 #include <functional>
 #include <iostream>
