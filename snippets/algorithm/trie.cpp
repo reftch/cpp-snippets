@@ -11,7 +11,6 @@ namespace http {
     using response_body = std::string;
     using request_handler = std::function<response_body(const std::string& path,
                                                         const std::unordered_map<std::string, std::string>& params)>;
-
     class router {
        private:
         struct Node {
@@ -124,6 +123,18 @@ int main() {
 
     http::request_handler handler;
     std::unordered_map<std::string, std::string> params;
+
+    // match checking
+    bool result;
+    std::string path;
+
+    path = "/api/v1/users/123";
+    result = r.match("GET", path, &handler, &params);
+    std::cout << path << " is " << (result ? "founded" : "NOT founded") << '\n';
+
+    path = "/api/v1/123";
+    result = r.match("GET", path, &handler, &params);
+    std::cout << path << " is " << (result ? "founded" : "NOT founded") << '\n';
 
     if (r.match("GET", "/api/v1/users/123", &handler, &params)) {
         http::response_body body = handler("/api/v1/users/123", params);
