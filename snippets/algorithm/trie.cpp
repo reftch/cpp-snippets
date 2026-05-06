@@ -6,7 +6,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace http {
+namespace router {
 
     using response_body = std::string;
     using request_handler = std::function<response_body(const std::string& path,
@@ -38,6 +38,7 @@ namespace http {
         Node* node = &root;
 
         for (const auto& part : parts) {
+            // found params
             if (!part.empty() && part[0] == ':') {
                 if (!node->param_child) {
                     node->param_child = std::make_unique<Node>();
@@ -105,42 +106,76 @@ namespace http {
         return parts;
     }
 
-}  // namespace http
+}  // namespace router
 
-http::response_body home_handler(const std::string& path, const std::unordered_map<std::string, std::string>& params) {
-    return "<html><h1>Home</h1></html>";
+router::response_body home_handler(const std::string& path, const std::unordered_map<std::string, std::string>& params) {
+    return "{\"method\":\"GET\",\"path\":\"" + path + "\"}";
 }
 
-http::response_body api_handler(const std::string& path, const std::unordered_map<std::string, std::string>& params) {
+router::response_body get_users(const std::string& path, const std::unordered_map<std::string, std::string>& params) {
     const std::string& id = params.at("id");
-    return "{\"id\":\"" + id + "\",\"name\":\"user\"}";
+    return "{\"method\":\"GET\",\"path\":\"" + path + "\",\"id\":\"" + id + "\",\"name\":\"user\"}";
+}
+
+router::response_body post_users(const std::string& path, const std::unordered_map<std::string, std::string>& params) {
+    const std::string& id = params.at("id");
+    return "{\"method\":\"POST\",\"path\":\"" + path + "\",\"id\":\"" + id + "\",\"name\":\"user\"}";
+}
+
+router::response_body get_edit(const std::string& path, const std::unordered_map<std::string, std::string>& params) {
+    const std::string& id = params.at("id");
+    const std::string& userId = params.at("userId");
+    return "{\"method\":\"GET\",\"path\":\"" + path + "\",\"id\":\"" + id + "\",\"name\":\"user\",\"userId\":\"" + userId + "\"}";
 }
 
 int main() {
-    http::router r;
+    router::router r;
     r.register_handler("GET", "/", home_handler);
-    r.register_handler("GET", "/api/v1/users/:id", api_handler);
+    r.register_handler("GET", "/api/v1/users/:id", get_users);
+    r.register_handler("GET", "/api/v1/users/:id/edit/:userId", get_edit);
 
-    http::request_handler handler;
+    r.register_handler("POST", "/api/v1/users/:id", post_users);
+
+    router::request_handler handler;
     std::unordered_map<std::string, std::string> params;
 
+    auto print = [](std::string& path, std::string& body) -> void {
+        std::cout << "Response for [" << path << "]: " << body << '\n';
+    };
+
     // match checking
-    bool result;
     std::string path;
 
     path = "/api/v1/users/123";
-    result = r.match("GET", path, &handler, &params);
-    std::cout << path << " is " << (result ? "founded" : "NOT founded") << '\n';
-
-    path = "/api/v1/123";
-    result = r.match("GET", path, &handler, &params);
-    std::cout << path << " is " << (result ? "founded" : "NOT founded") << '\n';
-
-    if (r.match("GET", "/api/v1/users/123", &handler, &params)) {
-        http::response_body body = handler("/api/v1/users/123", params);
-        std::cout << "Response: " << body << '\n';
-        // send_response(200, body);
-    } else {
-        // send_response(404, "Not found");
+    if (r.match("GET", path, &handler, &params)) {
+        router::response_body body = handler(path, params);
+        print(path, body);
     }
+
+    path = "/api/v1/users/1";
+    if (r.match("POST", path, &handler, &params)) {
+        router::response_body body = handler(path, params);
+        print(path, body);
+    }
+
+    path = "/api/v1/users/1";
+    if (r.match("PATCH", path, &handler, &params)) {
+        router::response_body body = handler(path, params);
+        print(path, body);
+    } else {
+        std::cout << "Handler was not found" << std::endl;
+    }
+
+    path = "/api/v1/users/201/edit/1001";
+    if (r.match("GET", path, &handler, &params)) {
+        router::response_body body = handler(path, params);
+        print(path, body);
+    }
+
+    path = "/";
+    if (r.match("GET", path, &handler, &params)) {
+        router::response_body body = handler(path, params);
+        print(path, body);
+    }
+
 }
