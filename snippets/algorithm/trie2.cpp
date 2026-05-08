@@ -69,10 +69,12 @@ int main() {
     TrieNode t;
     t.insert(&t, "/home");
     t.insert(&t, "/api/v1/:id");
+    t.insert(&t, "/api/v1/:id/users/:userid");
 
     std::cout << "Search: " << t.search(&t, "/home") << '\n';
     std::cout << "Search: " << t.search(&t, "home") << '\n';
     std::cout << "Search: " << t.search(&t, "/api/v1/:id") << '\n';
     std::cout << "Search: " << t.search(&t, "/api/v1/:idd") << '\n';
+    std::cout << "Search: " << t.search(&t, "/api/v1/123/users/:userid") << '\n';
     return 0;
 }
