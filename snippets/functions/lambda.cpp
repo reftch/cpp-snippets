@@ -71,6 +71,7 @@ int main() {
     }
     std::cout << '\n';
 
+    // Lambda with no parameters
     auto succeeded = []() { return true; };
     std::cout << (succeeded() ? "True" : "False") << '\n';
 
