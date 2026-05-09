@@ -1,16 +1,15 @@
 /**
  * https://www.geeksforgeeks.org/cpp/lambda-expression-in-c/
- * 
+ *
  */
+#include <algorithm>
 #include <iostream>
 #include <vector>
 
 int main() {
     // Defining a lambda
-    auto res = [](int x) {
-        return x + x;
-    };
-    
+    auto res = [](int x) { return x + x; };
+
     // Using the lambda
     std::cout << res(5) << '\n';
 
@@ -36,13 +35,13 @@ int main() {
         v2.push_back(m);
     };
 
-      //  Capture v1 by reference and v2 by value
+    //  Capture v1 by reference and v2 by value
     auto mixed = [&v1, v2](int m) mutable {
         v1.push_back(m);
         v2.push_back(m);
     };
 
-     // Case 1: byRef — modifies both v1 and v2
+    // Case 1: byRef — modifies both v1 and v2
     byRef(20);
 
     // Case 2: byVal — modifies only copies (originals unchanged)
@@ -57,24 +56,23 @@ int main() {
     // sorting
     std::vector<int> v3 = {5, 1, 8, 3, 9, 2, 5, 1, 10};
 
-	// Sort in descending order
-	sort(v3.begin(), v3.end(), [] (const int& a, const int&b) {
-		return a > b;
-	});
+    // Sort in descending order
+    sort(v3.begin(), v3.end(), [](const int& a, const int& b) { return a > b; });
 
     print(v3);
 
     // Find first element divisible by 3
-	auto it = find_if(v3.begin(), v3.end(), [] (const int& a) {
-		return a % 3 == 0;
-	});
+    auto it = find_if(v3.begin(), v3.end(), [](const int& a) { return a % 3 == 0; });
 
     if (it != v3.end()) {
         std::cout << *it;
-    } else { 
+    } else {
         std::cout << "No such element";
     }
     std::cout << '\n';
+
+    auto succeeded = []() { return true; };
+    std::cout << (succeeded() ? "True" : "False") << '\n';
 
     return 0;
 }
