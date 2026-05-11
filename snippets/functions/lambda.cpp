@@ -3,12 +3,13 @@
  *
  */
 #include <algorithm>
+#include <functional>
 #include <iostream>
 #include <vector>
 
 int main() {
     // Defining a lambda
-    auto res = [](int x) { return x + x; };
+    std::function<int(int)> res = [](int x) { return x + x; };
 
     // Using the lambda
     std::cout << res(5) << '\n';

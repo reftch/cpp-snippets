@@ -1,7 +1,6 @@
 #include <iostream>
 
 int main() {
-    //
     int a = 10;
     int* ptr = &a;
 
@@ -16,8 +15,8 @@ int main() {
     // 4 bytes for a 32-bit System
     std::cout << "Size of pointer is " << sizeof(ptr) << " bytes" << '\n';
 
-    // A nullptr is a pointer that does not point to any valid memory location. It is often used to initialize a pointer
-    // when you do not want it to point to any object.
+    // A nullptr is a pointer that does not point to any valid memory location.
+    // It is often used to initialize a pointer when you do not want it to point to any object.
     int* ptr2 = nullptr;
 
     // A void pointer (void*) is a special type of pointer in C++ that has no associated data type.
