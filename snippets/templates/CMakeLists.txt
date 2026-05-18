@@ -1,1 +1,1 @@
-add_executable(concepts concepts.cpp)
+add_executable(concepts concepts.cc)

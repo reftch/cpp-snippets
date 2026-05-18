@@ -1,3 +1,3 @@
-add_executable(poll poll.cpp)
-add_executable(server server.cpp)
-add_executable(select select.cpp)
+add_executable(poll poll.cc)
+add_executable(server server.cc)
+add_executable(select select.cc)

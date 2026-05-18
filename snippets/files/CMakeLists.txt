@@ -1,1 +1,1 @@
-add_executable(files files.cpp)
+add_executable(files files.cc) 

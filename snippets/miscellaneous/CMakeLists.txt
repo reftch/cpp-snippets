@@ -1,1 +1,1 @@
-add_executable(calc calc.cpp)
+add_executable(calc calc.cc)

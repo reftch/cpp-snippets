@@ -1,1 +1,1 @@
-add_executable(regex regex.cpp)
+add_executable(regex regex.cc)
