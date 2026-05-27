@@ -6,11 +6,10 @@ std::mutex counter_mtx;
 int counter = 0;
 
 void increment_counter() {
-    counter_mtx.lock();
+    std::lock_guard<std::mutex> lock(counter_mtx);  // RAII - automatic locking/unlocking
     for (size_t i = 0; i < 1000000; ++i) {
         ++counter;
     }
-    counter_mtx.unlock();
 }
 
 int main() {
