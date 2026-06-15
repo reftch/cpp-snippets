@@ -2,6 +2,8 @@
 add_subdirectory(basic_types)
 # Data types
 add_subdirectory(data_types)
+# Error handling
+add_subdirectory(error_handling)
 # Algorithms
 add_subdirectory(algorithm)
 # Files
