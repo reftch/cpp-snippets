@@ -16,6 +16,8 @@ add_subdirectory(miscellaneous)
 add_subdirectory(networks)
 # Parallel
 add_subdirectory(parallel)
+# Patterns
+add_subdirectory(pattern)
 # Templates
 add_subdirectory(templates)
 # Utilities
