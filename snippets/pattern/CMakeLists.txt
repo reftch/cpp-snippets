@@ -1,3 +1,4 @@
+add_executable(builder builder.cc)
 add_executable(observer observer.cc)
 add_executable(optional_arguments optional_arguments.cc)
 add_executable(virtual_constructor virtual_constructor.cc)
