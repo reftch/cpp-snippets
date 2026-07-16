@@ -5,13 +5,10 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-#include <algorithm>
 #include <chrono>
 #include <cstring>
 #include <functional>
-#include <future>
 #include <iostream>
-#include <thread>
 #include <vector>
 
 namespace http {
@@ -66,7 +63,7 @@ namespace http {
             }
 
             auto end_time = std::chrono::high_resolution_clock::now();
-            auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
+            auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
 
             std::cout << "server listening on http://" << host << ":" << port << " in " << duration << '\n';
 
@@ -190,7 +187,7 @@ static const char* okResp =
 
 int main() {
     // create server instance
-    auto s_ptr = std::make_unique<http::server>("127.0.0.1", 8080);
+    auto s_ptr = std::make_unique<http::server>("127.0.0.1", 8083);
     auto server_ptr = s_ptr.get();
 
     auto home_handler = [](int fd) -> std::string {

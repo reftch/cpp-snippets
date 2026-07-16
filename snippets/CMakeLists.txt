@@ -22,3 +22,7 @@ add_subdirectory(pattern)
 add_subdirectory(templates)
 # Utilities
 add_subdirectory(utilities)
+# Variant
+add_subdirectory(variant)
+# Web
+add_subdirectory(web)
